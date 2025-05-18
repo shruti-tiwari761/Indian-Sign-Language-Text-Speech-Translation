@@ -96,13 +96,8 @@ Visit `http://127.0.0.1:8000/` in your browser to access the application.
 
 ## 🙏 Acknowledgements
 
-- [YOLOv11](https://github.com/ultralytics/yolov11)
-- [GTTS](https://pypi.org/project/gTTS/)
-- [Django](https://www.djangoproject.com/)
-- Indian Sign Language datasets (custom or open source)
+- [YOLOv11](https://github.com/ultralytics/yolov11) — for real-time gesture detection.
+- [GTTS (Google Text-to-Speech)](https://pypi.org/project/gTTS/) — for converting recognized text to speech.
+- [Django](https://www.djangoproject.com/) — for the backend web framework.
+- [Indian Sign Language Dataset](https://universe.roboflow.com/niladri-basu-roy-qnrm4/indian-sign-language-detection/dataset/2) — used for training and testing sign recognition models.
 
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
