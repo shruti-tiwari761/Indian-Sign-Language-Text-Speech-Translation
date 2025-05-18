@@ -1,4 +1,4 @@
-# 🇮🇳 Indian Sign Language Translator (Text/Speech) using YOLOv11 & GTTS
+## Indian Sign Language Translator (Text/Speech) using YOLOv11 & GTTS
 
 This Django-based web application translates Indian Sign Language (ISL) into text and speech. It uses **YOLOv11** for real-time gesture recognition and **GTTS (Google Text-to-Speech)** for generating speech output.
 
