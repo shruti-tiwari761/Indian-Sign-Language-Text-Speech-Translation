@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Detection - HandNet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @keyframes backgroundChange {
+            0% { background-image: url('{% static "home/images/background_resized.jpg" %}'); }
+            50% { background-image: url('{% static "home/images/background2_resized.webp" %}'); }
+            100% { background-image: url('{% static "home/images/background_resized.jpg" %}'); }
+        }
+
+        body {
+            height: 100vh;
+            margin: 0;
+            animation: backgroundChange 30s infinite;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 10;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background: white;
+            color: black;
+        }
+
+        .hero {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .cube {
+            position: absolute;
+            top: 80vh;
+            left: 45vw;
+            width: 10px;
+            height: 10px;
+            border: solid 1px rgba(131, 180, 176, 0.8);
+            transform-origin: top left;
+            transform: scale(0) rotate(0deg) translate(-50%, -50%);
+            animation: cube 6s ease-in forwards infinite;
+        }
+
+        .cube:nth-child(2n) {
+            border-color: rgba(96, 125, 139, 0.8);
+        }
+
+        .cube:nth-child(2) {
+            animation-delay: 1s;
+            left: 25vw;
+            top: 40vh;
+        }
+
+        .cube:nth-child(3) {
+            animation-delay: 2s;
+            left: 75vw;
+            top: 50vh;
+        }
+
+        .cube:nth-child(4) {
+            animation-delay: 3s;
+            left: 90vw;
+            top: 10vh;
+        }
+
+        .cube:nth-child(5) {
+            animation-delay: 4s;
+            left: 10vw;
+            top: 85vh;
+        }
+
+        .cube:nth-child(6) {
+            animation-delay: 5s;
+            left: 50vw;
+            top: 10vh;
+        }
+
+        @keyframes cube {
+            from {
+                transform: scale(0) rotate(0deg) translate(-50%, -50%);
+                opacity: 1;
+            }
+            to {
+                transform: scale(20) rotate(960deg) translate(-50%, -50%);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .prediction-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: black;
+            font-size: 2em;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: black;
+            color: white;
+        }
+
+        .btn:hover {
+            background: white;
+            color: black;
+            border: 1px solid black;
+        }
+
+        .prediction-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .sign-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sign-text {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: black;
+        }
+
+        .sign-info {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .letters-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .output-text {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            min-height: 50px;
+            font-size: 24px;
+            word-wrap: break-word;
+        }
+
+        .output-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .space-btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .space-btn:hover {
+            background: #45a049;
+        }
+
+        .speak-output-btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .speak-output-btn:hover {
+            background: #0056b3;
+        }
+
+        .clear-btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #dc3545;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: #007bff;
+            transition: width 0.3s ease;
+        }
+
+        .messages {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+        }
+
+        .no-detection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+
+        .no-detection i {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">HandNet</div>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'prediction' %}">Image Prediction</a></li>
+            <li><a href="{% url 'learning' %}">Learning</a></li>
+            <li><a href="{% url 'aboutus' %}">About Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'feedback' %}">Feedback</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Hero Animation -->
+    <div class="hero">
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+
+    <div class="container">
+        <div class="prediction-container">
+            <h1>Sign Language Detection</h1>
+            <div class="video-container">
+                <video id="video" autoplay playsinline></video>
+            </div>
+            <div class="controls">
+                <button class="btn" id="startBtn">Start Camera</button>
+                <button class="btn" id="stopBtn" disabled>Stop Camera</button>
+                <button class="btn" id="speakBtn" disabled>Speak</button>
+            </div>
+            <div class="prediction-result" id="result">
+                <div class="no-detection">
+                    <i class="fas fa-hand"></i>
+                    <p>No hand gesture detected</p>
+                </div>
+            </div>
+
+            <div class="letters-container">
+                <div class="output-text" id="output-text"></div>
+                <div class="output-controls">
+                    <button class="space-btn" id="space-btn">Add Space</button>
+                    <button class="speak-output-btn" id="speak-output-btn">Speak Sentence</button>
+                    <button class="clear-btn" id="clear-btn">Clear Output</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const speakBtn = document.getElementById('speakBtn');
+        const result = document.getElementById('result');
+        let isDetecting = false;
+        let stream = null;
+        let lastPrediction = null;
+        
+        // Function to start video stream
+        async function startVideo() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                console.log("Camera started successfully");
+            } catch (err) {
+                alert('Error accessing camera. Please make sure you have granted camera permissions.');
+                console.error("Camera error:", err);
+            }
+        }
+
+        // Function to stop video stream
+        function stopVideo() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                stream = null;
+                console.log("Camera stopped successfully");
+            }
+        }
+        
+        // Start button click handler
+        startBtn.addEventListener('click', async () => {
+            await startVideo();
+            isDetecting = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            speakBtn.disabled = false;
+            sendFrameForPrediction();
+            console.log("Detection started");
+        });
+        
+        // Stop button click handler
+        stopBtn.addEventListener('click', () => {
+            isDetecting = false;
+            stopVideo();
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            speakBtn.disabled = true;
+            result.innerHTML = `
+                <div class="no-detection">
+                    <i class="fas fa-hand"></i>
+                    <p>No hand gesture detected</p>
+                </div>
+            `;
+            console.log("Detection stopped");
+        });
+
+        // Speak button click handler
+        speakBtn.addEventListener('click', () => {
+            if (lastPrediction) {
+                const utterance = new SpeechSynthesisUtterance(lastPrediction);
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            }
+        });
+        
+        // Function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        // Function to send frame for prediction
+        async function sendFrameForPrediction() {
+            if (!isDetecting) return;
+        
+            try {
+                // Draw video frame to canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                
+                console.log(`Frame dimensions: ${canvas.width}x${canvas.height}`);
+        
+                // Convert to blob
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+                console.log(`Captured frame, size: ${blob.size} bytes`);
+        
+                // Create form data
+                const formData = new FormData();
+                formData.append('image', blob);
+        
+                // Send to server
+                console.log("Sending frame to server...");
+                const response = await fetch('/predict/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                });
+                
+                console.log(`Server response status: ${response.status}`);
+                const data = await response.json();
+                console.log("Server response data:", data);
+        
+                if (!response.ok) {
+                    throw new Error(data.error || `Server error: ${response.status}`);
+                }
+        
+                // Display predictions
+                const predictions = data.predictions || [];
+                if (predictions.length > 0) {
+                    console.log(`Received ${predictions.length} predictions`);
+                    // Sort by confidence (highest first)
+                    predictions.sort((a, b) => b.confidence - a.confidence);
+                    
+                    // Get best prediction
+                    const bestPrediction = predictions[0];
+                    console.log(`Best prediction: ${bestPrediction.sign} (${bestPrediction.confidence})`);
+                    
+                    // Store the prediction for speech
+                    lastPrediction = bestPrediction.sign;
+                    
+                    // Add the predicted sign to the output text if confidence is high enough
+                    if (bestPrediction.confidence > 0.5) {
+                        const outputText = document.getElementById('output-text');
+                        // Only add if it's different from the last character to avoid duplicates
+                        if (outputText.textContent.slice(-1) !== bestPrediction.sign) {
+                            outputText.textContent += bestPrediction.sign;
+                        }
+                    }
+                    
+                    const confidencePercent = (bestPrediction.confidence * 100).toFixed(1);
+                    
+                    // Determine color based on confidence
+                    let confidenceColor = '#dc3545'; // red (low)
+                    if (bestPrediction.confidence > 0.7) {
+                        confidenceColor = '#28a745'; // green (high)
+                    } else if (bestPrediction.confidence > 0.5) {
+                        confidenceColor = '#ffc107'; // yellow (medium)
+                    }
+                    
+                    result.innerHTML = `
+                        <div class="sign-container">
+                            <div class="sign-text">${bestPrediction.sign}</div>
+                            <div class="sign-info">Type: ${bestPrediction.type.charAt(0).toUpperCase() + bestPrediction.type.slice(1)}</div>
+                            <div class="sign-info">Confidence: ${confidencePercent}%</div>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: ${confidencePercent}%; background-color: ${confidenceColor}"></div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // If there are multiple predictions
+                    if (predictions.length > 1) {
+                        console.log("Displaying alternative predictions");
+                        result.innerHTML += `<h3 style="margin-top: 15px; font-size: 16px;">Other Possibilities</h3>`;
+                        
+                        for (let i = 1; i < Math.min(predictions.length, 3); i++) {
+                            const pred = predictions[i];
+                            const confPercent = (pred.confidence * 100).toFixed(1);
+                            console.log(`Alternative ${i}: ${pred.sign} (${confPercent}%)`);
+                            
+                            result.innerHTML += `
+                                <div style="margin-top: 10px; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 5px;">
+                                    <strong>${pred.sign}</strong> (${confPercent}%)
+                                </div>
+                            `;
+                        }
+                    }
+                } else {
+                    console.log("No predictions received from server");
+                    lastPrediction = null;
+                    result.innerHTML = `
+                        <div class="no-detection">
+                            <i class="fas fa-hand"></i>
+                            <p>${data.message || 'No hand gesture detected'}</p>
+                        </div>
+                    `;
+                }
+        
+                // Continue detection loop
+                if (isDetecting) {
+                    setTimeout(sendFrameForPrediction, 200); // Predict every 200ms
+                }
+            } catch (error) {
+                console.error('Error during prediction:', error);
+                console.error('Error stack:', error.stack);
+                result.innerHTML = `
+                    <div class="error" style="padding: 15px; background: rgba(220, 53, 69, 0.1); color: #721c24; border-radius: 5px;">
+                        <strong>Error:</strong> ${error.message}
+                    </div>
+                `;
+                
+                // Try again after a delay
+                if (isDetecting) {
+                    setTimeout(sendFrameForPrediction, 1000); // Retry after 1 second
+                }
+            }
+        }
+
+        // Remove the letter grid and space button code
+        const outputText = document.getElementById('output-text');
+        const clearBtn = document.getElementById('clear-btn');
+        const spaceBtn = document.getElementById('space-btn');
+        const speakOutputBtn = document.getElementById('speak-output-btn');
+        
+        // Add space button functionality
+        spaceBtn.onclick = () => {
+            outputText.textContent += ' ';
+        };
+
+        // Add speak output button functionality
+        speakOutputBtn.onclick = () => {
+            const textToSpeak = outputText.textContent.trim();
+            if (textToSpeak) {
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            }
+        };
+        
+        // Add clear button functionality
+        clearBtn.onclick = () => {
+            outputText.textContent = '';
+        };
+    </script>
+</body>
+</html>

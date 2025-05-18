@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning - Indian Sign Language</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet">
+  <style>
+    /* Reset and Box-Sizing */
+    *{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+@keyframes backgroundChange {
+        0% { background-image: url('{% static "home/images/background_resized.jpg" %}'); }
+        50% { background-image: url('{% static "home/images/background2_resized.webp" %}'); }
+        100% { background-image: url('{% static "home/images/background_resized.jpg" %}'); }
+    }
+
+
+body {
+    height: 100vh;
+    margin: 0;
+    animation: backgroundChange 30s infinite;
+
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+}
+body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1); /* Light black transparency */
+        backdrop-filter: blur(10px); /* Glass effect */
+        -webkit-backdrop-filter: blur(10px); /* For Safari support */
+        z-index: -1; /* Ensure it stays behind all content */
+    }
+
+
+    
+@keyframes fadeInNavbar {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.hero {
+    
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .cube {
+    position: absolute;
+    top: 80vh;
+    left: 45vw;
+    width: 10px;
+    height: 10px;
+    border: solid 1px rgba(131, 180, 176, 0.8);
+    transform-origin: top left;
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);
+    animation: cube 6s ease-in forwards infinite;
+  }
+
+  .cube:nth-child(2n) {
+    border-color: rgba(96, 125, 139, 0.8);
+  }
+
+  .cube:nth-child(2) {
+    animation-delay: 1s;
+    left: 25vw;
+    top: 40vh;
+  }
+
+  .cube:nth-child(3) {
+    animation-delay: 2s;
+    left: 75vw;
+    top: 50vh;
+  }
+
+  .cube:nth-child(4) {
+    animation-delay: 3s;
+    left: 90vw;
+    top: 10vh;
+  }
+
+  .cube:nth-child(5) {
+    animation-delay: 4s;
+    left: 10vw;
+    top: 85vh;
+  }
+
+  .cube:nth-child(6) {
+    animation-delay: 5s;
+    left: 50vw;
+    top: 10vh;
+  }
+
+  @keyframes cube {
+    from {
+      transform: scale(0) rotate(0deg) translate(-50%, -50%);
+      opacity: 1;
+    }
+    to {
+      transform: scale(20) rotate(960deg) translate(-50%, -50%);
+      opacity: 0;
+    }
+  }
+
+    /* Navbar */
+    .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Darker semi-transparent background */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 10;
+    opacity: 1;  /* Visibility fix */
+}
+
+.navbar .logo {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.navbar ul li a:hover {
+    background: white;
+    color: black;
+}
+
+
+body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        @keyframes moveUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+        .btn {
+    padding: 0px; /* Reduce padding */
+    font-size: 1px; /* Reduce text size */
+    border: 2px solid white; /* White border */
+    background-color: rgba(255, 255, 255, 0.3); /* Transparent white */
+    color: black; /* Black text */
+    cursor: pointer;
+    border-radius: 0px; /* Slightly smaller rounded edges */
+    transition: 0.3s;
+    font-weight: bold;
+    opacity: 0;
+    animation: moveUp 0.5s ease-in-out forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+}
+
+@keyframes fadeIn {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+    }
+
+/* Adding delay for each button from A to Z */
+.btn:nth-child(1)  { animation-delay: 0s; }   /* A */
+.btn:nth-child(2)  { animation-delay: 0.2s; } /* B */
+.btn:nth-child(3)  { animation-delay: 0.4s; } /* C */
+.btn:nth-child(4)  { animation-delay: 0.6s; } /* D */
+.btn:nth-child(5)  { animation-delay: 0.8s; } /* E */
+.btn:nth-child(6)  { animation-delay: 1.0s; } /* F */
+.btn:nth-child(7)  { animation-delay: 1.2s; } /* G */
+.btn:nth-child(8)  { animation-delay: 1.4s; } /* H */
+.btn:nth-child(9)  { animation-delay: 1.6s; } /* I */
+.btn:nth-child(10) { animation-delay: 1.8s; } /* J */
+.btn:nth-child(11) { animation-delay: 2.0s; } /* K */
+.btn:nth-child(12) { animation-delay: 2.2s; } /* L */
+.btn:nth-child(13) { animation-delay: 2.4s; } /* M */
+.btn:nth-child(14) { animation-delay: 2.6s; } /* N */
+.btn:nth-child(15) { animation-delay: 2.8s; } /* O */
+.btn:nth-child(16) { animation-delay: 3.0s; } /* P */
+.btn:nth-child(17) { animation-delay: 3.2s; } /* Q */
+.btn:nth-child(18) { animation-delay: 3.4s; } /* R */
+.btn:nth-child(19) { animation-delay: 3.6s; } /* S */
+.btn:nth-child(20) { animation-delay: 3.8s; } /* T */
+.btn:nth-child(21) { animation-delay: 4.0s; } /* U */
+.btn:nth-child(22) { animation-delay: 4.2s; } /* V */
+.btn:nth-child(23) { animation-delay: 4.4s; } /* W */
+.btn:nth-child(24) { animation-delay: 4.6s; } /* X */
+.btn:nth-child(25) { animation-delay: 4.8s; } /* Y */
+.btn:nth-child(26) { animation-delay: 5.0s; } /* Z */
+
+.btn:hover {
+ background-color: rgba(255, 255, 255, 0.5); /* Slightly darker on hover */
+            
+ }
+  .btn-img {
+ width: 150px;  /* Adjust image size */
+ height: 150px;
+ object-fit: contain;
+ }
+ @keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+/* Add tooltip styles */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip:hover .btn-img {
+    opacity: 0.3;
+    transition: opacity 0.3s;
+}
+</style>
+  
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">HandNet</div>
+    <ul>
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'prediction' %}">Image Prediction</a></li>
+      <li><a href="{% url 'learning' %}">Learning</a></li>
+      <li><a href="{% url 'aboutus' %}">About Us</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'feedback' %}">Feedback</a></li>
+      {% if user.is_authenticated %}
+        <li><a href="{% url 'profile' %}">Profile</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <!-- Hero Animation -->
+  <div class="hero">
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+  </div>
+
+  <div class="button-container">
+    <div class="row">
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/a1.jpg' %}" alt="A" class="btn-img"></button><span class="tooltiptext">Letter A</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/b.jpg' %}" alt="B" class="btn-img"></button><span class="tooltiptext">Letter B</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/11A.jpg' %}" alt="C" class="btn-img"></button><span class="tooltiptext">Letter C</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/d.jpg' %}" alt="D" class="btn-img"></button><span class="tooltiptext">Letter D</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/e.jpg' %}" alt="E" class="btn-img"></button><span class="tooltiptext">Letter E</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/f.jpg' %}" alt="F" class="btn-img"></button><span class="tooltiptext">Letter F</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/g.jpg' %}" alt="G" class="btn-img"></button><span class="tooltiptext">Letter G</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/h1.jpg' %}" alt="H" class="btn-img"></button><span class="tooltiptext">Letter H</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/ijpg.jpg' %}" alt="I" class="btn-img"></button><span class="tooltiptext">Letter I</span></div>
+    </div>
+    <div class="row">
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/j.jpg' %}" alt="J" class="btn-img"></button><span class="tooltiptext">Letter J</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/k.jpg' %}" alt="K" class="btn-img"></button><span class="tooltiptext">Letter K</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/image-L.png' %}" alt="L" class="btn-img"></button><span class="tooltiptext">Letter L</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/m.jpg' %}" alt="M" class="btn-img"></button><span class="tooltiptext">Letter M</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/n.jpg' %}" alt="N" class="btn-img"></button><span class="tooltiptext">Letter N</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/o.jpg' %}" alt="O" class="btn-img"></button><span class="tooltiptext">Letter O</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/p.jpg' %}" alt="P" class="btn-img"></button><span class="tooltiptext">Letter P</span></div>
+    </div>
+    <div class="row">
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/q.jpg' %}" alt="Q" class="btn-img"></button><span class="tooltiptext">Letter Q</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/r.jpg' %}" alt="R" class="btn-img"></button><span class="tooltiptext">Letter R</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/s.jpg' %}" alt="S" class="btn-img"></button><span class="tooltiptext">Letter S</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/t.jpg' %}" alt="T" class="btn-img"></button><span class="tooltiptext">Letter T</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/u.jpg' %}" alt="U" class="btn-img"></button><span class="tooltiptext">Letter U</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/v.jpg' %}" alt="V" class="btn-img"></button><span class="tooltiptext">Letter V</span></div>
+    </div>
+    <div class="row">
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/w.jpg' %}" alt="W" class="btn-img"></button><span class="tooltiptext">Letter W</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/x.jpg' %}" alt="X" class="btn-img"></button><span class="tooltiptext">Letter X</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/y.jpg' %}" alt="Y" class="btn-img"></button><span class="tooltiptext">Letter Y</span></div>
+        <div class="tooltip"><button class="btn"><img src="{% static 'home/images/z.jpg' %}" alt="Z" class="btn-img"></button><span class="tooltiptext">Letter Z</span></div>
+    </div>
+</div>
+</body>
+</html>

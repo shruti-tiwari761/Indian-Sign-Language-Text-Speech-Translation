@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>INDIAN SIGN LANGUAGE</title>
+        <style>
+            *{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+
+@keyframes backgroundChange {
+        0% { background-image: url('{% static "home/images/background_resized.jpg" %}'); }
+        50% { background-image: url('{% static "home/images/background2_resized.webp" %}'); }
+        100% { background-image: url('{% static "home/images/background_resized.jpg" %}'); }
+    }
+
+
+body {
+    height: 100vh;
+    margin: 0;
+    animation: backgroundChange 30s infinite;
+
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+}
+body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1); /* Light black transparency */
+        backdrop-filter: blur(10px); /* Glass effect */
+        -webkit-backdrop-filter: blur(10px); /* For Safari support */
+        z-index: -1; /* Ensure it stays behind all content */
+    }
+
+
+@keyframes fadeInNavbar {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.hero {
+    
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .cube {
+    position: absolute;
+    top: 80vh;
+    left: 45vw;
+    width: 10px;
+    height: 10px;
+    border: solid 1px rgba(131, 180, 176, 0.8);
+    transform-origin: top left;
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);
+    animation: cube 6s ease-in forwards infinite;
+  }
+
+  .cube:nth-child(2n) {
+    border-color: rgba(96, 125, 139, 0.8);
+  }
+
+  .cube:nth-child(2) {
+    animation-delay: 1s;
+    left: 25vw;
+    top: 40vh;
+  }
+
+  .cube:nth-child(3) {
+    animation-delay: 2s;
+    left: 75vw;
+    top: 50vh;
+  }
+
+  .cube:nth-child(4) {
+    animation-delay: 3s;
+    left: 90vw;
+    top: 10vh;
+  }
+
+  .cube:nth-child(5) {
+    animation-delay: 4s;
+    left: 10vw;
+    top: 85vh;
+  }
+
+  .cube:nth-child(6) {
+    animation-delay: 5s;
+    left: 50vw;
+    top: 10vh;
+  }
+
+  @keyframes cube {
+    from {
+      transform: scale(0) rotate(0deg) translate(-50%, -50%);
+      opacity: 1;
+    }
+    to {
+      transform: scale(20) rotate(960deg) translate(-50%, -50%);
+      opacity: 0;
+    }
+  }
+
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Darker semi-transparent background */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 10;
+    opacity: 1;  /* Visibility fix */
+}
+
+.navbar .logo {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.navbar ul li a:hover {
+    background: white;
+    color: black;
+}
+
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    background-color: black; /* Changed background to black */
+    font-size: 18px; /* Increased font size */
+    padding: 15px 30px;  /* Increased padding for a bigger button */
+    border-radius: 10px;  /* Rounded edges */
+    border: none;
+    transition: all 0.3s ease-in-out; /* Smooth hover effect */
+}
+
+/* Hover Effect */
+.btn:hover {
+    background-color: white;
+    color: black;
+    transform: scale(1.1); /* Slight pop effect */
+}
+
+/* Container Animation */
+.container {
+    background: linear-gradient(145deg, rgba(0,0,0,0.3), rgba(255,255,255,0.1));
+    transition: 0.3s ease;
+    backdrop-filter: blur(30px);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    height: 85vh;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    /* Flexbox Fix */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Brings content vertically to the center */
+    align-items: flex-start; /* Left-align content */
+    padding: 40px;
+    gap: 20px; /* Adds space between h2, p, and button */
+    
+    /* Initial State */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.7s ease-in-out forwards;
+    animation-delay: 0.2s;
+}
+
+
+/* Play Button */
+.play-button {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(145deg, #007bff, #0056b3);
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    animation: glow 2s infinite alternate;
+    position: absolute;
+    /* Ensure it is above other elements */
+    pointer-events: none; /* Mouse events will pass through */
+    z-index: 1000;
+}
+
+/* Play Icon */
+.play-button::before {
+    content: "";
+    border: 10px solid transparent;
+    border-left: 15px solid white;
+    position: absolute;
+}
+
+/* Glow Animation */
+@keyframes glow {
+    0% { box-shadow: 0 0 15px #007bff; }
+    100% { box-shadow: 0 0 30px #007bff; }
+}
+
+/* Sequential Animation for Child Elements */
+.container h2 {
+    font-size: 70px;
+    color: #222;
+    text-align: left;
+    max-width: 60%; 
+    word-wrap: break-word;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    
+    /* Initial State */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.7s ease-in-out forwards;
+    animation-delay: 1s; /* Delay after container */
+}
+
+.container p {
+    margin: 10px 0 30px;
+    color: #222;
+    text-align: left;
+    font-size: 24px;
+    line-height: 1.5;
+    white-space: normal;
+    word-break: break-word;
+    margin-bottom: 20px;
+
+    /* Initial State */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.7s ease-in-out forwards;
+    animation-delay: 1.5s; /* Delay after h2 */
+}
+
+.btn {
+    text-align: left;
+    display: inline-block;
+    
+    /* Initial State */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.7s ease-in-out forwards;
+    animation-delay: 2s; /* Delay after p */
+}
+
+/* Image Animations */
+.feature-img {
+    width: 450px;
+    position: absolute;
+    bottom: 40%;
+    right: 10%;
+    border-radius: 20px;
+    
+    /* Initial State */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.7s ease-in-out forwards;
+    animation-delay: 2.5s; /* Delay after button */
+}
+
+.second-img {
+    width: 300px;
+    position: absolute;
+    bottom: 10%;
+    right: 30%;
+    border-radius: 20px;
+    
+    /* Initial State */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.7s ease-in-out forwards;
+    animation-delay: 3s; /* Delay after first image */
+}
+
+/* Keyframes */
+@keyframes moveup {
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.anim{
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.5s linear forwards;
+}
+h2.anim {
+    animation-delay: 0.2s;
+}
+p.anim {
+    animation-delay: 0.5s;
+}
+.btn.anim {
+    animation-delay: 1s;
+}
+.feature-img.anim {
+    animation-delay: 1.5s; /* Corrected delay */
+}
+.second-img.anim {
+    animation-delay: 2s; /* Corrected delay */
+}
+@keyframes moveup{
+    100%{
+        opacity: 1;
+        transform: translateY(0px);
+        
+    }
+}
+
+.loader {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader::before {
+  content: "";
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(8px);
+  position: absolute;
+  width: 140px;
+  height: 55px;
+  z-index: 20;
+  border-radius: 0 0 10px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.274);
+  border-top: none;
+  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.082);
+  animation: anim2 2s infinite;
+}
+
+
+.loader div {
+  background: rgb(228, 228, 228);
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  z-index: 1;
+  animation: anim 2s infinite linear;
+  animation-delay: calc(-0.3s * var(--i));
+  transform: translateY(5px);
+  margin: 0.2em;
+  top: 0; /* Moves to the top of container */
+  left: 50%; 
+}
+
+@keyframes anim {
+  0%,
+  100% {
+    transform: translateY(5px);
+  }
+  50% {
+    transform: translateY(-65px);
+  }
+}
+
+@keyframes anim2 {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+   </style>
+
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="loader">
+                <div style="--i: 1"></div>
+                <div style="--i: 2"></div>
+                <div style="--i: 3"></div>
+                <div style="--i: 4"></div>
+              </div>
+            <h2 class="anim" id="heading">Transforming<br>Signs into Words!!</h2>
+            <p class="anim" id="paragraph">
+                Bridging the gap between silence and expression—<br>
+                Our Indian Sign Language translator empowers communication with ease<br>
+                and inclusivity!!
+            </p>
+            <a href="{% url 'prediction' %}" class="btn anim">Get Started</a>
+        
+            <div class="play-button" id="playButton"></div>
+        </div>
+        
+        <script>
+            const button = document.getElementById('playButton');
+            const container = document.querySelector('.container');
+        
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left - (button.offsetWidth / 2);
+                const y = e.clientY - rect.top - (button.offsetHeight / 2);
+        
+                // Clamp the movement vertically to h2 and p section
+                const headingRect = document.getElementById('heading').getBoundingClientRect();
+                const paragraphRect = document.getElementById('paragraph').getBoundingClientRect();
+        
+                if (e.clientY >= headingRect.top && e.clientY <= paragraphRect.bottom) {
+                    button.style.left = `${x}px`;
+                    button.style.top = `${y}px`;
+                }
+            });
+        </script>
+        
+        
+     <nav class="navbar">
+        <div class="logo">HandNet</div>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'prediction' %}">Image Prediction</a></li>
+            <li><a href="{% url 'learning' %}">Learning</a></li>
+            <li><a href="{% url 'aboutus' %}">About Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'feedback' %}">Feedback</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+     
+ <div>
+    <img src="{% static 'home/images/tent-1.jpg' %}" class="feature-img anim">
+    <img src="{% static 'home/images/tent-2.jpg' %}" class="feature-img second-img anim">
+</div>
+
+
+<div class="hero">
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+  </div>
+
+  
+
+    </div>
+    </body>
+</html>

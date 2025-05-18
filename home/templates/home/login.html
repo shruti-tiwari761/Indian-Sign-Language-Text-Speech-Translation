@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Indian Sign Language</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+       *{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+@keyframes backgroundChange {
+        0% { background-image: url('{% static "home/images/background_resized.jpg" %}'); }
+        50% { background-image: url('{% static "home/images/background2_resized.webp" %}'); }
+        100% { background-image: url('{% static "home/images/background_resized.jpg" %}'); }
+    }
+
+
+body {
+    height: 100vh;
+    margin: 0;
+    animation: backgroundChange 30s infinite;
+
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+}
+body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1); /* Light black transparency */
+        backdrop-filter: blur(10px); /* Glass effect */
+        -webkit-backdrop-filter: blur(10px); /* For Safari support */
+        z-index: -1; /* Ensure it stays behind all content */
+    }
+
+
+    
+@keyframes fadeInNavbar {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.hero {
+    
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .cube {
+    position: absolute;
+    top: 80vh;
+    left: 45vw;
+    width: 10px;
+    height: 10px;
+    border: solid 1px rgba(131, 180, 176, 0.8);
+    transform-origin: top left;
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);
+    animation: cube 6s ease-in forwards infinite;
+  }
+
+  .cube:nth-child(2n) {
+    border-color: rgba(96, 125, 139, 0.8);
+  }
+
+  .cube:nth-child(2) {
+    animation-delay: 1s;
+    left: 25vw;
+    top: 40vh;
+  }
+
+  .cube:nth-child(3) {
+    animation-delay: 2s;
+    left: 75vw;
+    top: 50vh;
+  }
+
+  .cube:nth-child(4) {
+    animation-delay: 3s;
+    left: 90vw;
+    top: 10vh;
+  }
+
+  .cube:nth-child(5) {
+    animation-delay: 4s;
+    left: 10vw;
+    top: 85vh;
+  }
+
+  .cube:nth-child(6) {
+    animation-delay: 5s;
+    left: 50vw;
+    top: 10vh;
+  }
+
+  @keyframes cube {
+    from {
+      transform: scale(0) rotate(0deg) translate(-50%, -50%);
+      opacity: 1;
+    }
+    to {
+      transform: scale(20) rotate(960deg) translate(-50%, -50%);
+      opacity: 0;
+    }
+  }
+
+    /* Navbar */
+    .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Darker semi-transparent background */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 10;
+    opacity: 1;  /* Visibility fix */
+}
+
+.navbar .logo {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.navbar ul li a:hover {
+    background: white;
+    color: black;
+}
+.container {
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 10;
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    padding: 30px;
+    height: 50vh;
+    animation: moveUp 0.8s ease-in-out;
+    animation-delay: 0.2s;
+}
+
+.login-title {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: moveUp 0.8s ease-in-out;
+    animation-delay: 0s;
+}
+
+.input-group {
+  position: relative;
+  font-size: 20px;
+        margin: 15px 0;
+        border-bottom: 2px solid #000;
+        margin-bottom: 20px;
+    animation: moveUp 0.8s ease-in-out;
+    animation-delay: 0.4s;
+}
+
+.input-group label {
+  position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        font-size: 18px; /* Increased font size */
+        font-weight: bold; /* Made font bold */
+        color: black;
+        pointer-events: none;
+        transition: 0.5s;
+        margin-right: 10px;
+}
+
+.input-group input {
+  width: 320px;
+        height: 40px;
+        font-size: 16px;
+        
+        color: black;
+        padding: 0 5px;
+        background: transparent;
+        border: none;
+        outline: none;
+    
+    animation: moveUp 0.8s ease-in-out;
+    animation-delay: 0.6s;
+}
+
+.input-group input:focus~label,
+.input-group input:valid~label {
+    top: -5px;
+}
+    .remember {
+        margin-bottom: 5%;
+        margin-left: 7%;
+    }
+
+    .remember label {
+        color: black;
+        font-size: 14px;
+    }
+
+    .remember label input {
+        accent-color: black;
+    }
+
+    button {
+      position: relative;
+        width: 90%;
+        height: 40px;
+        background-color: black;
+        font-size: 16px;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 30px;
+        border: none;
+        outline: none;
+        margin-left: 5%;
+        margin-top: 10px;
+    animation: moveUp 0.8s ease-in-out;
+    animation-delay: 0.8s;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+@keyframes moveUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+    .error-message {
+        color: red;
+        font-size: 16px;
+        background-color: rgba(255, 0, 0, 0.1);
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    .signup-link {
+        font-size: 20px;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .signup-link p {
+        color:#222;
+    }
+
+    .signup-link p a {
+        color:blue;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .signup-link p a:hover {
+        text-decoration: underline;
+    }
+
+
+    </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">HandNet</div>
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'prediction' %}">Image Prediction</a></li>
+        <li><a href="{% url 'learning' %}">Learning</a></li>
+        <li><a href="{% url 'aboutus' %}">About Us</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+        <li><a href="{% url 'feedback' %}">Feedback</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+        {% endif %}
+    </ul>
+  </nav>
+
+  <!-- Hero Animation -->
+  <div class="hero">
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+  </div>
+  <main class="body-content">
+    
+    <div class="container">
+        <div class="form-wrapper">
+            <form method="POST">
+                {% csrf_token %}
+                <h2>Log In</h2>
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% for field in form %}
+                <div class="input-group">
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="error">
+                        {{ field.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit">Log In</button>
+
+                <div class="signUp-link">
+                    <p>Don't have an account? <a href="{% url 'signup' %}" class="signInBtn-link">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+<script>
+    // Initialize VanillaTilt after DOM content is loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        VanillaTilt.init(document.querySelector(".container"), {
+            max: 15,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2
+        });
+    });
+</script>
+
+</body>
+</html>
+
+
